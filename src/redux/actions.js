@@ -1,4 +1,4 @@
-import { CREATE_POST, FETCH_POSTS, SHOW_LOADER, HIDE_LOADER, SHOW_ALERT, HIDE_ALERT } from './types'
+import { CREATE_POST, SHOW_LOADER, HIDE_LOADER, SHOW_ALERT, HIDE_ALERT, REQUESTS_POSTS } from './types'
 
 export function createPost(post) {
   return {
@@ -40,19 +40,7 @@ export function hideAlert(text) {
 }
 
 export function fetchPosts() {
-  return async dispatch => {
-    try {
-      dispatch(showLoader())
-      const response = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=7')
-      const json = await response.json()
-
-      setTimeout(() => {
-        dispatch({ type: FETCH_POSTS, payload: json })
-        dispatch(hideLoader())
-      }, 1200)
-    } catch (e) {
-      dispatch(showAlert('Something went wrong :c'))
-      dispatch(hideLoader())
-    }
+  return {
+    type: REQUESTS_POSTS
   }
 }
