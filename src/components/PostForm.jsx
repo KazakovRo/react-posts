@@ -1,6 +1,8 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { createPost } from '../redux/actions'
 
-export default class PostForm extends React.Component {
+class PostForm extends React.Component {
   constructor(props) {
     super(props)
 
@@ -14,13 +16,15 @@ export default class PostForm extends React.Component {
 
     const { title } = this.state
 
+    if (!title.trim()) return
+
     const newPost = {
       title,
       id: Date.now().toString()
     }
 
     console.log(this.state.title, newPost)
-
+    this.props.createPost(newPost)
     this.setState({ title: '' })
   }
 
@@ -36,7 +40,7 @@ export default class PostForm extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.submitHandler}>
+      <form onSubmit={this.submitHandler} style={{ margin: '40px 0' }}>
         <div className='form-group'>
           <label htmlFor='title'>Post title</label>
           <input
@@ -55,3 +59,9 @@ export default class PostForm extends React.Component {
     )
   }
 }
+
+const mapDispatchToProps = {
+  createPost
+}
+
+export default connect(null, mapDispatchToProps)(PostForm)
