@@ -1,75 +1,50 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { createPost, showAlert } from '../redux/actions'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { createPostAction, showAlertAction } from '../redux/actions'
 import Alert from './Alert'
 
-class PostForm extends React.Component {
-  constructor(props) {
-    super(props)
+const PostForm = () => {
+  const [title, setTitle] = useState('')
 
-    this.state = {
-      title: ''
-    }
-  }
+  const { alert } = useSelector(({ app }) => app)
+  const dispatch = useDispatch()
 
-  submitHandler = e => {
+  const submitHandler = e => {
     e.preventDefault()
 
-    const { title } = this.state
-
-    if (!title.trim()) return this.props.showAlert('Title of post must contain at least 1 symbol')
+    if (!title.trim()) return dispatch(showAlertAction('Title of post must contain at least 1 symbol'))
 
     const newPost = {
       title,
       id: Date.now().toString()
     }
 
-    console.log(this.state.title, newPost)
-    this.props.createPost(newPost)
-    this.setState({ title: '' })
+    console.log(title, newPost)
+    dispatch(createPostAction(newPost))
+    setTitle('')
   }
 
-  changeInputHandler = e => {
-    e.persist()
-    this.setState(prevState => ({
-      ...prevState,
-      ...{
-        [e.target.name]: e.target.value
-      }
-    }))
-  }
+  return (
+    <form onSubmit={submitHandler} style={{ margin: '40px 0' }}>
+      {alert && <Alert text={alert} />}
 
-  render() {
-    return (
-      <form onSubmit={this.submitHandler} style={{ margin: '40px 0' }}>
-        {this.props.alert && <Alert text={this.props.alert} />}
-
-        <div className='form-group'>
-          <label htmlFor='title'>Post title</label>
-          <input
-            type='text'
-            className='form-control'
-            id='title'
-            value={this.state.title}
-            name='title'
-            onChange={this.changeInputHandler}
-          />
-        </div>
-        <button className='btn btn-success' type='submit'>
-          Create
-        </button>
-      </form>
-    )
-  }
+      <div className='form-group'>
+        <label htmlFor='title'>Post title</label>
+        <input
+          type='text'
+          className='form-control'
+          id='title'
+          value={title}
+          name='title'
+          onChange={({ target: { value } }) => setTitle(value)}
+        />
+      </div>
+      <button className='btn btn-success' type='submit'>
+        Create
+      </button>
+    </form>
+  )
 }
 
-const mapDispatchToProps = {
-  createPost,
-  showAlert
-}
-
-const mapStateToProps = state => ({
-  alert: state.app.alert
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(PostForm)
+export default PostForm

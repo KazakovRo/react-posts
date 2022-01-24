@@ -1,28 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './index.js'
+import { Provider } from 'react-redux'
+
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-
-import { applyMiddleware, compose, createStore } from 'redux'
-import { Provider } from 'react-redux'
-import { rootReducer } from './redux/rootReducer.js'
-import thunk from 'redux-thunk'
-import { forbiddenWords } from './redux/middleWare.js'
-import createSagaMiddleware from '@redux-saga/core'
-import { sagaWatcher } from './redux/sagas.js'
-
-const saga = createSagaMiddleware()
-
-const store = createStore(
-  rootReducer,
-  compose(
-    applyMiddleware(thunk, forbiddenWords, saga),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
-)
-
-saga.run(sagaWatcher)
+import store from './redux/store'
 
 ReactDOM.render(
   <React.StrictMode>

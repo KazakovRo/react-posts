@@ -1,0 +1,27 @@
+import React from 'react'
+import PostForm from './components/PostForm'
+import Posts from './components/Posts'
+import FetchedPosts from './components/FetchedPosts'
+
+const App = () => (
+  <div className='container pt-3'>
+    <section className='row'>
+      <div className='col'>
+        <PostForm />
+      </div>
+    </section>
+
+    <section className='row'>
+      <div className='col'>
+        <h2>Sync posts</h2>
+        <Posts />
+      </div>
+      <div className='col'>
+        <h2>Async posts</h2>
+        <FetchedPosts />
+      </div>
+    </section>
+  </div>
+)
+
+export default App

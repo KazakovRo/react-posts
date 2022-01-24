@@ -1,25 +1,24 @@
-import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Post from './Post'
-import { fetchPosts } from '../redux/actions'
+import { fetchPostsAction } from '../redux/actions'
 import { Loader } from './Loader'
 
 const FetchedPosts = () => {
   const dispatch = useDispatch()
-  const posts = useSelector(state => state.posts.fetchedPosts)
-  const loading = useSelector(state => state.app.loading)
+  const { fetchedPosts } = useSelector(({ posts }) => posts)
+
+  const { loading } = useSelector(({ app }) => app)
 
   if (loading) return <Loader />
 
-  if (!posts.length) {
+  if (!fetchedPosts.length)
     return (
-      <button className='btn btn-primary' onClick={() => dispatch(fetchPosts())}>
+      <button className='btn btn-primary' onClick={() => dispatch(fetchPostsAction())}>
         Download
       </button>
     )
-  }
 
-  return posts.map(post => <Post post={post} key={post.id} />)
+  return fetchedPosts.map(post => <Post post={post} key={post.id} />)
 }
 
 export default FetchedPosts
