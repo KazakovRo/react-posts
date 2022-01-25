@@ -5,8 +5,8 @@ const initialState = {
   alert: null
 }
 
-export const appReducer = (state = initialState, action) => {
-  switch (action.type) {
+export const appReducer = (state = initialState, { type, payload }) => {
+  switch (type) {
     case SHOW_LOADER:
       return { ...state, loading: true }
 
@@ -14,7 +14,7 @@ export const appReducer = (state = initialState, action) => {
       return { ...state, loading: false }
 
     case SHOW_ALERT:
-      return { ...state, alert: action.payload }
+      return { ...state, alert: payload }
 
     case HIDE_ALERT:
       return { ...state, alert: null }

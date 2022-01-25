@@ -5,13 +5,13 @@ const initialState = {
   fetchedPosts: []
 }
 
-export const postsReducer = (state = initialState, action) => {
-  switch (action.type) {
+export const postsReducer = (state = initialState, { type, payload }) => {
+  switch (type) {
     case CREATE_POST:
-      return { ...state, posts: [...state.posts, action.payload] }
+      return { ...state, posts: [...state.posts, payload] }
 
     case FETCH_POSTS:
-      return { ...state, fetchedPosts: action.payload }
+      return { ...state, fetchedPosts: payload }
 
     default:
       return state
